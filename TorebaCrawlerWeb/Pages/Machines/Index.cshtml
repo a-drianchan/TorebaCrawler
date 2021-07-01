@@ -1,0 +1,220 @@
+﻿@page
+@model TorebaCrawlerWeb.Pages.Machines.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+&nbsp;
+<h1>Current Machine List</h1>
+&nbsp;
+
+
+<table id="machine" class="table table-hover">
+    <thead class="bg-dark text-light text-center font-weight-normal">
+        <tr>
+            <th class="font-weight-normal">
+                @Html.DisplayNameFor(model => model.Machine[0].MachineName)
+            </th>
+            <th class="font-weight-normal">
+                @Html.DisplayNameFor(model => model.Machine[0].Cost)
+            </th>
+            <th class="font-weight-normal">
+                @Html.DisplayNameFor(model => model.Machine[0].MachineType)
+            </th>
+            <th class="font-weight-normal">
+                @Html.DisplayNameFor(model => model.Machine[0].CostType)
+            </th>
+            <th class="font-weight-normal">
+                @Html.DisplayNameFor(model => model.Machine[0].StatusType)
+            </th>
+            <th class="font-weight-normal">
+                @Html.DisplayNameFor(model => model.Machine[0].SpecialTagType)
+            </th>
+            <th class="font-weight-normal">
+                Machine Link
+            </th>
+            <th class="font-weight-normal">
+                Replays
+            </th>
+        </tr>
+        <tr>
+            <td><input class="form-control" type="text" id="machine-name-search" name="Machine Name" placeholder="Search By Name"></td>
+            <td><input class="form-control" type="text" id="cost-search" name="Cost" placeholder="Cost"></td>
+            <td>
+                <select size="1" id="play_search" name="play_search" class="custom-select">
+                    <option value="" selected="selected">
+                        All
+                    </option>
+                    <option value="Bridge">
+                        Bridge
+                    </option>
+                    <option value="Drop">
+                        Drop
+                    </option>
+                    <option value="Panel">
+                        Panel
+                    </option>
+                    <option value="Ring">
+                        Ring
+                    </option>
+                    <option value="Takoyaki">
+                        Takoyaki
+                    </option>
+                    <option value="None">
+                        None
+                    </option>
+                </select>
+            </td>
+            <td>
+                <select size="1" id="cost_type_search" name="cost_type_search" class="custom-select">
+                    <option value="All" selected="selected">
+                        All
+                    </option>
+                    <option value="TP Only">
+                        TP Only
+                    </option>
+                    <option value="No Tutorial">
+                        No Tutorial
+                    </option>
+                </select>
+            </td>
+            <td>
+                <select size="1" id="status_search" name="status_search" class="custom-select">
+                    <option value="" selected="selected">
+                        All
+                    </option>
+                    <option value="Open">
+                        Open
+                    </option>
+                    <option value="In Use">
+                        In Use
+                    </option>
+                    <option value="Maintenance">
+                        Maintenance
+                    </option>
+                    <option value="In Progress">
+                        In Progress
+                    </option>
+                    <option value="Restocking">
+                        Restocking
+                    </option>
+                    <option value="Sold Out">
+                        Sold Out
+                    </option>
+                </select>
+            </td>
+            <td>
+                <select size="1" id="tag_search" name="tag_search" class="custom-select">
+                    <option value="" selected="selected">
+                        All
+                    </option>
+                    <option value="New">
+                        New
+                    </option>
+                    <option value="Recommended">
+                        Recommended
+                    </option>
+                    <option value="Free Ticket">
+                        Ticket Grab
+                    </option>
+                    <option value="Sale">
+                        Sale
+                    </option>
+                    <option value="Super Chance">
+                        Super Chance
+                    </option>
+                    <option value="Special Event">
+                        Special Event
+                    </option>
+                    <option value="Limited">
+                        Limited
+                    </option>
+                </select>
+
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Machine)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MachineName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cost)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MachineType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CostType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StatusType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SpecialTagType)
+                </td>
+                <td>
+                    <a add target="_blank" href="https://www.toreba.net/en/play/webapp/@item.MachineID">Link</a>
+                </td>
+                <td>
+                    @{
+                        var parms = new Dictionary<string, string>
+                                                    {
+                { "searchString", item.MachineID.ToString() }
+                };
+                    }
+                    <a add target="_blank" asp-page="/Replays/Index" asp-all-route-data="parms">Replays</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<script type="text/javascript" language="javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" language="javascript" src="~/js/dataTables.bootstrap4.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        //$('#machine thead tr:eq(1) th').each(function () {
+        //    var title = $(this).text();
+        //    $(this).html('<input type="text" placeholder="Search ' + title + '" class="column_search" />');
+        //});
+
+       var table = $('#machine').DataTable(
+            {
+                pageLength: 25,
+               orderCellsTop: true,
+               responsive: true
+            }
+        );
+
+        $('#machine thead').on('keyup', ".form-control", function () {
+
+            table
+                .column($(this).parent().index())
+                .search(this.value)
+                .draw();
+        });
+
+        $('#machine thead').on('change', ".custom-select", function () {
+
+            table
+                .column($(this).parent().index())
+                .search(this.value)
+                .draw();
+        });
+
+
+    });
+</script>
+

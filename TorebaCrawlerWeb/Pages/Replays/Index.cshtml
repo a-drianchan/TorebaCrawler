@@ -1,0 +1,75 @@
+﻿@page
+@model TorebaCrawlerWeb.Pages.Replays.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+&nbsp;
+<h1>Replay List</h1>
+&nbsp;
+
+<table id="replay" class="table table-hover">
+    <thead class="bg-dark text-light text-center font-weight-normal">
+        <tr>
+            <th class="font-weight-normal">
+                @Html.DisplayNameFor(model => model.Replay[0].MachineID)
+            </th>
+            <th class="font-weight-normal">
+                @Html.DisplayNameFor(model => model.Replay[0].PrizeName)
+            </th>
+            <th class="font-weight-normal">
+                @Html.DisplayNameFor(model => model.Replay[0].Time)
+            </th>
+            <th class="font-weight-normal">
+                @Html.DisplayNameFor(model => model.Replay[0].ReplayLink)
+            </th>
+            <th class="font-weight-normal">
+                Details
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Replay)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MachineID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PrizeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Time)
+                </td>
+                <td>
+                    <a href="@item.ReplayLink" add target="_blank">Link</a>
+                </td>
+                <td>
+                    <a asp-page="./Details" asp-route-id="@item.ReplayID">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+<script type="text/javascript" language="javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/jquery.dataTables.js"></script>
+<script type="text/javascript" language="javascript" src="~/js/dataTables.bootstrap4.min.js"></script>
+
+<script>
+
+    console.log("Trying to convert datatable")
+    $(document).ready(function () {
+        console.log("Data loaded, converting")
+        $('#replay').DataTable({
+            "order": [[2, "desc"]],
+            "orderCellsTop": true
+        });
+
+        table.buttons().container()
+            .appendTo('#example_wrapper .col-md-6:eq(0)');
+    });
+</script>

@@ -1,0 +1,99 @@
+﻿@page
+@model TorebaCrawlerWeb.Pages.Takoyaki.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+&nbsp;
+<h1>Takoyaki Machine List</h1>
+&nbsp;
+
+
+<table id="machine" class="table table-hover">
+    <thead class="bg-dark text-light text-center">
+        <tr>
+            <th class="font-weight-normal">
+                @Html.DisplayNameFor(model => model.Machine[0].MachineID)
+            </th>
+            <th class="font-weight-normal">
+                @Html.DisplayNameFor(model => model.Machine[0].MachineName)
+            </th>
+            <th class="font-weight-normal">
+                @Html.DisplayNameFor(model => model.Machine[0].Cost)
+            </th>
+            <th class="font-weight-normal">
+                @Html.DisplayNameFor(model => model.Machine[0].MachineType)
+            </th>
+            <th class="font-weight-normal">
+                @Html.DisplayNameFor(model => model.Machine[0].CostType)
+            </th>
+            <th class="font-weight-normal">
+                @Html.DisplayNameFor(model => model.Machine[0].StatusType)
+            </th>
+            <th class="font-weight-normal">
+                @Html.DisplayNameFor(model => model.Machine[0].SpecialTagType)
+            </th>
+            <th class="font-weight-normal">
+                Machine Link
+            </th>
+            <th class="font-weight-normal">
+                Replays
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Machine)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MachineID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MachineName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cost)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MachineType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CostType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StatusType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SpecialTagType)
+                </td>
+                <td>
+                    <a add target="_blank" href="https://www.toreba.net/en/play/webapp/@item.MachineID">Link</a>
+                </td>
+                <td>
+                    @{
+                        var parms = new Dictionary<string, string>
+                                    {
+                { "searchString", item.MachineID.ToString() }
+                };
+                    }
+                    <a add target="_blank" asp-page="/Replays/Index" asp-all-route-data="parms">Replays</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<script type="text/javascript" language="javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" language="javascript" src="~/js/dataTables.bootstrap4.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $('#machine').DataTable().filter("Doraemon");
+
+    });
+</script>
+
