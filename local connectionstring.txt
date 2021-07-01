@@ -1,0 +1,1 @@
+		<add name="TorebaMachineDB" connectionString="Server=.\sqlexpress;Database=TorebaMachine;Trusted_Connection=True;" providerName="System.Data.SqlClient"/>
